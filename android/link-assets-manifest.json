@@ -1,0 +1,53 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "node_modules/@ant-design/icons-react-native/README.md",
+      "sha1": "1dc9db2046f3b3ea02e68919d78448dbe3f0ebbf"
+    },
+    {
+      "path": "node_modules/@ant-design/icons-react-native/es/fill.d.ts",
+      "sha1": "a8d7eb9f86db4b608c33e880ca4e78a75879bdae"
+    },
+    {
+      "path": "node_modules/@ant-design/icons-react-native/es/fill.js",
+      "sha1": "bf9285ce0edc100759a7b79a8ce82e3e91f0d00d"
+    },
+    {
+      "path": "node_modules/@ant-design/icons-react-native/es/index.d.ts",
+      "sha1": "12b6618ab7148958dbd68a80dfa7edc4a7c92d89"
+    },
+    {
+      "path": "node_modules/@ant-design/icons-react-native/es/index.js",
+      "sha1": "3e831620cc822835db284dba04fac60c5aee361f"
+    },
+    {
+      "path": "node_modules/@ant-design/icons-react-native/es/outline.d.ts",
+      "sha1": "7e0cece5581d64d5ba5b52fa52b32ca3075e6e9f"
+    },
+    {
+      "path": "node_modules/@ant-design/icons-react-native/es/outline.js",
+      "sha1": "0a8f603ecc61e37a6fbcf2b2d40ff24cfb5164f6"
+    },
+    {
+      "path": "node_modules/@ant-design/icons-react-native/fonts/antfill.ttf",
+      "sha1": "56960e7721fc92b62e0f7c4d131ffe34ed042c49"
+    },
+    {
+      "path": "node_modules/@ant-design/icons-react-native/fonts/antoutline.ttf",
+      "sha1": "66720607b7496a48f145425386b2082b73662fd1"
+    },
+    {
+      "path": "node_modules/@ant-design/icons-react-native/package.json",
+      "sha1": "0a04e58f1878724732893dfa3bbc9731a087622b"
+    },
+    {
+      "path": "node_modules/@ant-design/icons-react-native/react-native.config.js",
+      "sha1": "23d616b787e4d642ea0b686bf65fe206eb4170b9"
+    },
+    {
+      "path": "ios/dolphin.m4a",
+      "sha1": "c6ac39f14ea4c6548d0a27fe1d4e9cba658d2230"
+    }
+  ]
+}
