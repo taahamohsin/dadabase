@@ -5,7 +5,7 @@ const headers = new Headers({
 });
 
 export const api = {
-  getRandomDadJoke: async setIsLoading => {
+  getRandomDadJoke: async (setIsLoading, setShowError) => {
     try {
       setIsLoading(true);
       const data = await fetch(`${BASE_URL}/dadjokes`, {
@@ -15,7 +15,7 @@ export const api = {
       const parsedResponse = await data.json();
       return parsedResponse;
     } catch (e) {
-      console.log('ERROR', e, BASE_URL, API_KEY);
+      setShowError(true);
       return [];
     } finally {
       setIsLoading(false);

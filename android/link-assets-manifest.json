@@ -48,6 +48,10 @@
     {
       "path": "ios/dolphin.m4a",
       "sha1": "c6ac39f14ea4c6548d0a27fe1d4e9cba658d2230"
+    },
+    {
+      "path": "ios/trombone.mp3",
+      "sha1": "53a38e1b43dc845b945b46d9bbe312aa35150940"
     }
   ]
 }
