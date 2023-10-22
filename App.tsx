@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   useWindowDimensions,
   View,
+  SafeAreaView,
 } from 'react-native';
 import {
   Provider,
@@ -13,7 +14,9 @@ import {
   Button,
   Card,
   Modal,
-  NoticeBar,
+  Switch,
+  WhiteSpace,
+  WingBlank,
 } from '@ant-design/react-native';
 import Sound from 'react-native-sound';
 
@@ -68,11 +71,22 @@ type Joke = {
   joke: string;
 };
 
+const toggleSound = (onChange, checked) => (
+  <Switch
+    onChange={onChange}
+    checked={checked}
+    style={{alignSelf: 'end'}}
+    defaultChecked
+  />
+);
+
 function App(): JSX.Element {
   const [jokes, setJokes] = useState<Array<Joke> | null>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [showError, setShowError] = useState<boolean>(false);
+  const [showError, setShowError] = [true, () => {}];
+  // useState<boolean>(false);
+  const [isSoundOn, setIsSoundOn] = useState<boolean>(true);
   const {height, width} = useWindowDimensions();
 
   useEffect(() => {
@@ -84,10 +98,10 @@ function App(): JSX.Element {
       }
     };
     getJokes();
-  }, [jokes, setJokes, showError]);
+  }, [jokes, setJokes]);
 
   useEffect(() => {
-    if (!showError && jokes?.length > 0) {
+    if (!showError && isSoundOn && jokes?.length > 0) {
       laugh.play(success => {
         if (success) {
           console.log('successfully finished playing');
@@ -96,17 +110,12 @@ function App(): JSX.Element {
         }
       });
     }
-  }, [jokes, showError]);
+  }, [jokes, isSoundOn, showError]);
 
   const styles = StyleSheet.create({
     page: {
-      height,
+      height: '100vh',
       backgroundColor: '#F4D545',
-    },
-    container: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '50%',
     },
     element: {
       flex: 1,
@@ -118,14 +127,13 @@ function App(): JSX.Element {
       aspectRatio: 1.3,
     },
     card: {
-      minHeight: 0,
       backgroundColor: '#4564F4',
       borderColor: '#F4D545',
       borderRadius: 20,
+      width: 'fit-content',
     },
     cardBody: {
       padding: 10,
-      flexGrow: 0,
       justifyContent: 'center',
     },
     text: {
@@ -155,33 +163,39 @@ function App(): JSX.Element {
       textAlign: 'center',
     },
     bonusJokeButton: {
-      marginBottom: 20,
+      flex: 1,
+    },
+    header: {
+      fontFamily: 'Poppins-Light',
+      fontWeight: 900,
+      color: 'white',
+      fontSize: 18,
+    },
+    jokeButtonContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
   });
 
   return (
     <Provider>
-      <Flex
-        direction="column"
-        justify="center"
-        align="center"
-        style={styles.page}>
-        {isLoading ? (
-          <ActivityIndicator
-            size="large"
-            color="white"
-            style={styles.loading}
-            animating
-            toast
-          />
-        ) : (
-          <>
-            <Flex
-              wrap="wrap"
-              direction="column"
-              justify="center"
-              align="center"
-              style={styles.container}>
+      <SafeAreaView>
+        <Flex
+          direction="column"
+          justify="center"
+          align="center"
+          style={styles.page}>
+          {isLoading ? (
+            <ActivityIndicator
+              size="large"
+              color="white"
+              style={styles.loading}
+              animating
+              toast
+            />
+          ) : (
+            <>
               <Modal
                 title=""
                 onClose={() => setIsModalOpen(false)}
@@ -196,75 +210,122 @@ function App(): JSX.Element {
                   <Text style={styles.modalText}>Made you look! &#128514;</Text>
                 </View>
               </Modal>
-              {showError && (
-                <NoticeBar
-                  mode="closable"
-                  icon={customIcon}
-                  onPress={() => setShowError(false)}
-                  marqueeProps={{
-                    loop: false,
-                  }}>
-                  {/* <Text style={[styles.text, {color: 'black', fontSize: 13}]}> */}
-                  Uh oh! We doo-dun-diddly failed to fetch you a dad joke.
-                  Please try again latte.
-                  {/* </Text> */}
-                </NoticeBar>
-              )}
-              {!isModalOpen && jokes?.length > 0 && (
+              <Flex wrap="wrap" direction="column">
                 <>
-                  <Button
-                    type="primary"
-                    onPress={() => {
-                      setIsModalOpen(true);
-                      trombone.play(success => {
-                        if (success) {
-                          console.log('successfully finished playing');
-                        } else {
-                          console.log(
-                            'playback failed due to audio decoding errors',
-                          );
-                        }
-                      });
-                    }}
-                    style={styles.bonusJokeButton}>
-                    <Text style={styles.text}>Press me for a bonus joke!</Text>
-                  </Button>
-                  {
-                    <Flex.Item style={styles.element}>
-                      <Card style={styles.card}>
-                        <Card.Body style={styles.cardBody}>
-                          <Text style={styles.text}>{jokes}</Text>
+                  {!isModalOpen && !showError && (
+                    <Flex
+                      justify="end"
+                      style={{
+                        width: '100%',
+                        alignSelf: 'flex-end',
+                      }}>
+                      <Text style={{color: 'black', fontSize: 18}}>
+                        Toggle sound
+                      </Text>
+                      <WingBlank size="md">
+                        {toggleSound(setIsSoundOn, isSoundOn)}
+                      </WingBlank>
+                    </Flex>
+                  )}
+                </>
+
+                {!isModalOpen && (
+                  <Flex.Item style={styles.jokeButtonContainer}>
+                    {showError && (
+                      <Card
+                        // eslint-disable-next-line react-native/no-inline-styles
+                        style={{
+                          height: 100,
+                          backgroundColor: '#F03737',
+                        }}
+                        full>
+                        <Card.Header
+                          title={
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                marginLeft: -5,
+                              }}>
+                              {customIcon}
+                              <WingBlank size="md">
+                                <Text style={styles.header}>Error</Text>
+                              </WingBlank>
+                            </View>
+                          }
+                        />
+                        <Card.Body>
+                          <WingBlank>
+                            <Text style={styles.text}>
+                              Uh oh! Doo-dun-diddly failed to fetch you a dad
+                              joke. Please try again and text me if it still
+                              doesn't work.
+                            </Text>
+                          </WingBlank>
                         </Card.Body>
                       </Card>
-                    </Flex.Item>
-                  }
-                </>
-              )}
-
-              {!isModalOpen && (
-                <Flex.Item style={styles.element}>
-                  <Button
-                    type="primary"
-                    style={styles.button}
-                    onPress={() => {
-                      setJokes(null);
-                    }}>
-                    <Text style={styles.text}>{`Press me for ${
-                      jokes?.length === 0 ? 'a' : 'another'
-                    } dad joke!`}</Text>
-                  </Button>
-                </Flex.Item>
-              )}
-
-              {jokes?.length > 0 && !isModalOpen && (
-                <Flex.Item style={styles.element}>
-                  <Image source={Dolphin} style={styles.picture} />
-                </Flex.Item>
-              )}
-            </Flex>
-          </>
-        )}
-      </Flex>
+                    )}
+                    {!showError && jokes?.length > 0 && (
+                      <View style={styles.card}>
+                        <WhiteSpace />
+                        <WingBlank>
+                          <Text style={styles.text}>{jokes}</Text>
+                        </WingBlank>
+                        <WhiteSpace />
+                      </View>
+                    )}
+                    <WhiteSpace />
+                    <View>
+                      <Button
+                        type="primary"
+                        style={styles.button}
+                        onPress={() => {
+                          if (showError) {
+                            setShowError(false);
+                          }
+                          setJokes(null);
+                        }}>
+                        <Text style={styles.text}>{`Press me for ${
+                          jokes?.length === 0 ? 'a' : 'another'
+                        } dad joke!`}</Text>
+                      </Button>
+                      {!isModalOpen && jokes?.length > 0 && (
+                        <>
+                          <WhiteSpace />
+                          <Button
+                            type="primary"
+                            onPress={() => {
+                              setIsModalOpen(true);
+                              trombone.play(success => {
+                                if (success) {
+                                  console.log('successfully finished playing');
+                                } else {
+                                  console.log(
+                                    'playback failed due to audio decoding errors',
+                                  );
+                                }
+                              });
+                            }}>
+                            <Text style={styles.text}>
+                              Press me for a bonus joke!
+                            </Text>
+                          </Button>
+                        </>
+                      )}
+                    </View>
+                  </Flex.Item>
+                )}
+                {jokes?.length > 0 && !isModalOpen && (
+                  <>
+                    <WhiteSpace />
+                    <Image source={Dolphin} style={styles.picture} />
+                  </>
+                )}
+              </Flex>
+            </>
+          )}
+        </Flex>
+      </SafeAreaView>
     </Provider>
   );
 }
