@@ -27,7 +27,6 @@ import tromboneSound from './ios/trombone.mp3';
 
 const customIcon = (
   <Image
-    // tslint:disable-next-line:jsx-no-multiline-js
     source={{
       uri: 'https://zos.alipayobjects.com/rmsportal/bRnouywfdRsCcLU.png',
     }}
