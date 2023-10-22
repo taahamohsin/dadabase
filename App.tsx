@@ -31,7 +31,7 @@ const customIcon = (
     source={{
       uri: 'https://zos.alipayobjects.com/rmsportal/bRnouywfdRsCcLU.png',
     }}
-    style={{width: 12, height: 12}}
+    style={{width: 18, height: 18}}
   />
 );
 
@@ -81,24 +81,23 @@ const toggleSound = (onChange, checked) => (
 );
 
 function App(): JSX.Element {
-  const [jokes, setJokes] = useState<Array<Joke> | null>([]);
+  const [jokes, setJokes] = useState<Array<Joke> | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [showError, setShowError] = [true, () => {}];
-  // useState<boolean>(false);
+  const [showError, setShowError] = useState<boolean>(false);
   const [isSoundOn, setIsSoundOn] = useState<boolean>(true);
   const {height, width} = useWindowDimensions();
 
   useEffect(() => {
     const getJokes = async () => {
-      if (!jokes) {
+      if (jokes?.length === 0) {
         const data = await getRandomDadJoke(setIsLoading, setShowError);
         const dadJokes = data.map(elem => elem.joke);
         setJokes(dadJokes);
       }
     };
     getJokes();
-  }, [jokes, setJokes]);
+  }, [jokes, setJokes, setIsLoading, setShowError]);
 
   useEffect(() => {
     if (!showError && isSoundOn && jokes?.length > 0) {
@@ -212,7 +211,7 @@ function App(): JSX.Element {
               </Modal>
               <Flex wrap="wrap" direction="column">
                 <>
-                  {!isModalOpen && !showError && (
+                  {!isModalOpen && (
                     <Flex
                       justify="end"
                       style={{
@@ -228,7 +227,6 @@ function App(): JSX.Element {
                     </Flex>
                   )}
                 </>
-
                 {!isModalOpen && (
                   <Flex.Item style={styles.jokeButtonContainer}>
                     {showError && (
@@ -257,15 +255,16 @@ function App(): JSX.Element {
                         <Card.Body>
                           <WingBlank>
                             <Text style={styles.text}>
-                              Uh oh! Doo-dun-diddly failed to fetch you a dad
-                              joke. Please try again and text me if it still
-                              doesn't work.
+                              {`Uh oh! Doo-dun-diddly failed to fetch you ${
+                                jokes ? 'another' : 'a'
+                              } dad joke. Please try again and text me if it still doesn't work.`}
                             </Text>
                           </WingBlank>
                         </Card.Body>
                       </Card>
                     )}
-                    {!showError && jokes?.length > 0 && (
+                    <WhiteSpace />
+                    {jokes?.length > 0 && (
                       <View style={styles.card}>
                         <WhiteSpace />
                         <WingBlank>
@@ -283,10 +282,10 @@ function App(): JSX.Element {
                           if (showError) {
                             setShowError(false);
                           }
-                          setJokes(null);
+                          setJokes([]);
                         }}>
                         <Text style={styles.text}>{`Press me for ${
-                          jokes?.length === 0 ? 'a' : 'another'
+                          jokes ? 'another' : 'a'
                         } dad joke!`}</Text>
                       </Button>
                       {!isModalOpen && jokes?.length > 0 && (
