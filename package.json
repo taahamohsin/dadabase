@@ -10,7 +10,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@ant-design/icons-react-native": "^2.3.2",
     "@ant-design/react-native": "^5.0.4",
     "@react-native-camera-roll/camera-roll": "^5.10.0",
     "@react-native-community/segmented-control": "^2.2.2",
