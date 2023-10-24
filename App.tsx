@@ -217,7 +217,12 @@ function App(): JSX.Element {
                         width: '100%',
                         alignSelf: 'flex-end',
                       }}>
-                      <Text style={{color: 'black', fontSize: 18}}>
+                      <Text
+                        style={{
+                          color: 'black',
+                          fontSize: 18,
+                          fontFamily: 'Poppins-Light',
+                        }}>
                         Toggle sound
                       </Text>
                       <WingBlank size="md">
